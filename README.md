@@ -18,7 +18,7 @@ composer install
 
 2. Setup the Twitter stuff  
 
-    create a etc/settings.php file and fill in the settings please
+    create a `etc/settings.php` file and fill in the settings please
     
 ```php
 <?php
