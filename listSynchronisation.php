@@ -15,18 +15,32 @@ $settings = require 'etc/settings.php';
  * get twitter username from twitter list
  */
 
-$Twitter = new TwitterAPIExchange($settings);
+$Twitter    = new TwitterAPIExchange($settings);
 $userResult = [];
 
-$fetchMembers = function ($cursor = false) use ($Twitter, $settings, &$userResult) {
+$fetchMembers = function () {
+};
+
+$fetchMembers = function ($cursor = false) use (
+    $Twitter,
+    $settings,
+    &$fetchMembers,
+    &$userResult
+) {
     $username = $settings['twitter_user'];
-    $list = $settings['twitter_list'];
+    $list     = $settings['twitter_list'];
+
+    $query = [
+        "slug"              => $list,
+        "owner_screen_name" => $username
+    ];
+
+    if ($cursor) {
+        $query['cursor'] = $cursor;
+    }
 
     try {
-        $result = $Twitter->setGetfield(http_build_query([
-            "slug" => $list,
-            "owner_screen_name" => $username
-        ]))->buildOauth(
+        $result = $Twitter->setGetfield(http_build_query($query))->buildOauth(
             'https://api.twitter.com/1.1/lists/members.json',
             'GET'
         )->performRequest();
@@ -43,7 +57,9 @@ $fetchMembers = function ($cursor = false) use ($Twitter, $settings, &$userResul
 
     $userResult = array_merge($userResult, $result['users']);
 
-    $fetchMembers($result['next_cursor']);
+    if (!empty($result['next_cursor'])) {
+        $fetchMembers($result['next_cursor']);
+    }
 };
 
 $fetchMembers();
@@ -54,8 +70,6 @@ $twitterUsers = [];
 foreach ($userResult as $entry) {
     $twitterUsers[] = $entry['screen_name'];
 }
-
-var_dump($twitterUsers);
 
 // get twitter users from MegaMaker
 
