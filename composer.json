@@ -1,1 +1,19 @@
-{"require":{"ext-json":"*","j7mbo\/twitter-api-php":"*"},"version":"dev-master"}
+{
+  "name": "MegaMaker Twitter Sync",
+  "type": "quiqqer-module",
+  "description": "",
+  "version": "dev-master",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Henning Leutz",
+      "email": "support@pcsg.de",
+      "homepage": "http://www.pcsg.de",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "ext-json": "*",
+    "j7mbo\/twitter-api-php": "*"
+  }
+}
