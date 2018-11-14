@@ -12,7 +12,7 @@ $settings = require 'etc/settings.php';
 
 
 /**
- * get twitter username from twitter list
+ * get twitter usernames from twitter list
  */
 
 $Twitter    = new TwitterAPIExchange($settings);
@@ -65,13 +65,53 @@ $fetchMembers = function ($cursor = false) use (
 $fetchMembers();
 
 // filter
-$twitterUsers = [];
+$twTwitterUsernames = []; // twitter usernames
 
 foreach ($userResult as $entry) {
-    $twitterUsers[] = $entry['screen_name'];
+    $twTwitterUsernames[] = $entry['screen_name'];
 }
 
-// get twitter users from MegaMaker
+/**
+ * Get twitter users from MegaMaker
+ */
+
+$mmTwitterUsernames = shell_exec('php getTwitterNames.php'); // MegaMaker usernames
+$mmTwitterUsernames = json_decode($mmTwitterUsernames, true);
 
 
-// add newest users
+/**
+ * Add newest users
+ */
+
+// filter missing names
+$listFlip = array_flip($twTwitterUsernames);
+$missing  = array_filter($mmTwitterUsernames, function ($username) use ($listFlip) {
+    return !isset($listFlip[$username]);
+});
+
+if (empty($missing)) {
+    echo 'No new user found :-)'.PHP_EOL;
+    exit;
+}
+
+/**
+ * Add new users to the list
+ */
+
+foreach ($missing as $username) {
+    try {
+        $Twitter->setPostfields([
+            "slug"              => $settings['twitter_list'],
+            "owner_screen_name" => $settings['twitter_user'],
+            "screen_name"       => $username
+        ])->buildOauth(
+            'https://api.twitter.com/1.1/lists/members/create.json',
+            'GET'
+        )->performRequest();
+    } catch (\Exception $Exception) {
+        echo $Exception->getMessage().PHP_EOL;
+        exit;
+    }
+}
+
+echo 'Added all new users \(^^)/'.PHP_EOL;

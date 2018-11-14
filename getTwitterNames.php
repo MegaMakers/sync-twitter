@@ -50,6 +50,10 @@ $call   = 'https://club.megamaker.co/admin/users/list/active.json';
 $result = fetch($call);
 $users  = json_decode($result, true);
 
+if (!is_array($users)) {
+    echo '[]';
+    exit;
+}
 
 // get the profiles of each user
 
