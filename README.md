@@ -5,6 +5,13 @@ This little app fetches all twitter accounts from the MegaMaker club into a Twit
 
 ![MegaMaker](https://club.megamaker.co/uploads/default/optimized/1X/9205786661c1c58d22f5971cc32a5d8593e449c3_1_600x500.png)
 
+What you need
+------
+
+- You need a twitter app: https://apps.twitter.com/
+- Enable read/write access for your twitter app
+- Grab your access tokens from the twitter developer site
+
 Installation
 ------
 
@@ -35,7 +42,8 @@ return [
 
 ```
 
-3. How to run?
+How to run?
+------
 
 ```shell
 php sync.php
