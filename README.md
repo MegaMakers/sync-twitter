@@ -23,10 +23,13 @@ create a etc/settings.php file
 <?php
 
 return [
-    'oauth_access_token' => "YOUR_OAUTH_ACCESS_TOKEN",
+    'oauth_access_token'        => "YOUR_OAUTH_ACCESS_TOKEN",
     'oauth_access_token_secret' => "YOUR_OAUTH_ACCESS_TOKEN_SECRET",
-    'consumer_key' => "YOUR_CONSUMER_KEY",
-    'consumer_secret' => "YOUR_CONSUMER_SECRET"
+    'consumer_key'              => "YOUR_CONSUMER_KEY",
+    'consumer_secret'           => "YOUR_CONSUMER_SECRET",
+
+    'twitter_user' => 'de_henne',
+    'twitter_list' => 'megamaker'
 ];
 
 ```

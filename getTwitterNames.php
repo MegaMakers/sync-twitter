@@ -15,7 +15,7 @@
  */
 function fetch($url)
 {
-    $ch = curl_init();
+    $ch      = curl_init();
     $timeout = 5;
 
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -34,7 +34,7 @@ function fetch($url)
  */
 function fetchUser($username)
 {
-    return fetch('https://club.megamaker.co/admin/users/' . $username . '.json)');
+    return fetch('https://club.megamaker.co/admin/users/'.$username.'.json)');
 }
 
 /**
@@ -46,9 +46,9 @@ $twitterUser = [];
 
 // get all users
 
-$call = 'https://club.megamaker.co/admin/users/list/active.json';
+$call   = 'https://club.megamaker.co/admin/users/list/active.json';
 $result = fetch($call);
-$users = json_decode($result, true);
+$users  = json_decode($result, true);
 
 
 // get the profiles of each user
