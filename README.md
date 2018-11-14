@@ -3,22 +3,23 @@ MegaMaker Twitter List Sync
 
 This little app fetches all twitter accounts from the MegaMaker club into a Twitter List
 
+![MegaMaker](https://club.megamaker.co/uploads/default/optimized/1X/9205786661c1c58d22f5971cc32a5d8593e449c3_1_600x500.png)
 
 Installation
 ------
 
-1. Install all requirements with composers
+1. Install all requirements with composer
 
 
-```
+```shell
 composer install
 ```
 
 
-2. Setup the Twitter stuff
+2. Setup the Twitter stuff  
 
-create a etc/settings.php file
-
+    create a etc/settings.php file and fill in the settings please
+    
 ```php
 <?php
 
@@ -33,3 +34,11 @@ return [
 ];
 
 ```
+
+3. How to run?
+
+```shell
+php sync.php
+```
+
+the best thing is to set up a cron to run this script daily or every few hours.
