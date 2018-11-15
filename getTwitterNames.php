@@ -9,6 +9,16 @@
 
 // helper functions
 
+function getAuthQuery()
+{
+    $settings = require 'etc/settings.php';
+
+    return [
+        'api_key'      => $settings['discourse_api_key'],
+        'api_username' => $settings['discourse_api_username']
+    ];
+}
+
 /**
  * @param string $url
  * @return string
@@ -32,9 +42,54 @@ function fetch($url)
  * @param $username
  * @return string
  */
-function fetchUser($username)
+function fetchUser($username) use ($settings)
 {
-    return fetch('https://club.megamaker.co/admin/users/'.$username.'.json)');
+    return fetch(
+        'https://club.megamaker.co/admin/users/'.$username.'.json?'.http_build_query(getAuthQuery())
+    );
+}
+
+/**
+ * fetches all users from Discourse
+ *
+ * @param integer|bool $page
+ * @return mixed
+ */
+function fetchList($page = false)
+{
+    $query = getAuthQuery();
+
+    if ($page) {
+        $query['page'] = $page;
+    }
+
+    $call   = 'https://club.megamaker.co/admin/users/list/active.json?'.http_build_query($query);
+    $result = fetch($call);
+    $users  = json_decode($result, true);
+
+    return $users;
+}
+
+/**
+ * Fetches all users from Discourse
+ *
+ * @return array
+ */
+function getAllUsers()
+{
+    $users = [];
+
+    for ($i = 0; $i < 100; $i++) {
+        $result = fetchList($i);
+
+        if (empty($result)) {
+            break;
+        }
+
+        $users = array_merge($users, $result);
+    }
+
+    return $users;
 }
 
 /**
@@ -42,13 +97,7 @@ function fetchUser($username)
  */
 
 $twitterUser = [];
-
-
-// get all users
-
-$call   = 'https://club.megamaker.co/admin/users/list/active.json';
-$result = fetch($call);
-$users  = json_decode($result, true);
+$users       = getAllUsers();
 
 if (!is_array($users)) {
     echo '[]';
@@ -56,7 +105,6 @@ if (!is_array($users)) {
 }
 
 // get the profiles of each user
-
 foreach ($users as $username) {
     $userData = fetchUser($username);
     $userData = json_decode($userData, true);
