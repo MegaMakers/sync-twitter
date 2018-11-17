@@ -63,6 +63,7 @@ function fetchList($page = false)
         $query['page'] = $page;
     }
 
+
     $call   = 'https://club.megamaker.co/admin/users/list/active.json?'.http_build_query($query);
     $result = fetch($call);
     $users  = json_decode($result, true);
