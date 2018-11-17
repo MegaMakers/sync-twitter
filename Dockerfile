@@ -15,4 +15,4 @@ COPY getTwitterNames.php getTwitterNames.php
 COPY sync.php sync.php
 COPY ./etc/settings.php ./etc/settings.php
 
-ENTRYPOINT [ "php sync.php" ]
+ENTRYPOINT [ "php", "sync.php" ]

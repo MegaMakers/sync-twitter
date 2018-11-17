@@ -134,7 +134,7 @@ if (empty($missing)) {
 /**
  * Add new users to the list
  */
-
+$errorCount = 0;
 foreach ($missing as $username) {
     try {
         echo 'adding: '.$username.PHP_EOL;
@@ -155,9 +155,16 @@ foreach ($missing as $username) {
             exit(0);
         }
     } catch (\Exception $Exception) {
+        echo "EXCEPTION".PHP_EOL;
         echo $Exception->getMessage().PHP_EOL;
-        exit(0);
+        echo "on user ".$username.PHP_EOL;
+        $errorCount++;
+        if ($errorCount >= 5) {
+            exit(0);
+        }
     }
 }
 
 echo 'Added all new users \(^^)/'.PHP_EOL;
+
+exit(0);
