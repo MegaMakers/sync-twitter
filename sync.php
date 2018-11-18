@@ -152,7 +152,7 @@ foreach ($missing as $username) {
 
         if (isset($result['errors'])) {
             echo $result['errors'][0]['message'].PHP_EOL;
-            exit(0);
+            // exit(0);
         }
     } catch (\Exception $Exception) {
         echo "EXCEPTION".PHP_EOL;
