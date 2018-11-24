@@ -1,15 +1,15 @@
 <?php
 /*
-Copyright 2018 MegaMaker Community Members.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+    Copyright 2018 MegaMaker Community Members.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 */
 
 /**
@@ -116,6 +116,19 @@ $mmTwitterUsernames = array_map(function ($username) {
     return $username;
 }, $mmTwitterUsernames);
 
+// add extra user
+if (file_exists(dirname(__FILE__).'/etc/users.php')) {
+    $extraUsers = dirname(__FILE__).'/etc/users.php';
+
+    if (is_array($extraUsers)) {
+        foreach ($extraUsers as $username) {
+            if (is_string($username)) {
+                $mmTwitterUsernames[] = $username;
+            }
+        }
+    }
+}
+
 /**
  * Add newest users
  */
@@ -135,6 +148,7 @@ if (empty($missing)) {
  * Add new users to the list
  */
 $errorCount = 0;
+
 foreach ($missing as $username) {
     try {
         echo 'adding: '.$username.PHP_EOL;
@@ -158,7 +172,9 @@ foreach ($missing as $username) {
         echo "EXCEPTION".PHP_EOL;
         echo $Exception->getMessage().PHP_EOL;
         echo "on user ".$username.PHP_EOL;
+
         $errorCount++;
+
         if ($errorCount >= 5) {
             exit(0);
         }
@@ -166,5 +182,4 @@ foreach ($missing as $username) {
 }
 
 echo 'Added all new users \(^^)/'.PHP_EOL;
-
 exit(0);
